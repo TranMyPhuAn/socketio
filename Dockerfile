@@ -4,14 +4,10 @@ WORKDIR /usr/src/app
 
 COPY package*.json .
 
-RUN npm install
-
-COPY prisma/schema.prisma prisma/
-
-RUN npx prisma generate
+RUN yarn install
 
 COPY . .
 
-EXPOSE 9090
+EXPOSE 4567
 
 CMD ["node", "ap/src/server.js"]
