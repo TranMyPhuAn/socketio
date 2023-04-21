@@ -1,0 +1,42 @@
+version: '3'
+services: 
+
+  mysql_db:
+    image: mysql
+    # env_file: .env
+    container_name: mysql_db_prisma
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=db_food
+    volumes:
+      - mysql_db:/var/lib/mysql
+    networks:
+      - node-network
+  app:
+    depends_on:
+      - mysql_db
+    # image: ankakasi/node29
+    build: .
+    # env_file: .env
+    container_name: cons-node-prisma
+    ports:
+      - 3300:9090
+    environment:
+    - DATABASE_URL=mysql://root:1234@localhost:3307/db_movie?schema=public
+
+      # - DB_HOST=mysql_db
+      # - DB_USERNAME=root
+      # - DB_PASS=1234
+      # - DB_PORT=3307
+      # - DB_DIALECT=mysql
+      # - DB_DATABASE=db_food
+    networks:
+      - node-network
+
+volumes:
+  mysql_db:
+    driver: local
+networks:
+  node-network:
